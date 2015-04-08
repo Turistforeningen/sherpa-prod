@@ -1,0 +1,20 @@
+data:
+  image: busybox
+  volumes:
+    - /var/lib/postgresql/data
+  entrypoint: /bin/true
+
+postgres:
+  image: turistforeningen/sherpa-postgres:latest
+  volumes_from:
+    - data
+  command: postgres -N 300 -d 1
+
+psql:
+  image: turistforeningen/sherpa-postgres:latest
+  volumes:
+    - private-data:/private-data:ro
+  links:
+    - postgres
+  command: /bin/true
+
