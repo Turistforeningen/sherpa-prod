@@ -9,6 +9,7 @@ postgres:
   volumes_from:
     - data
   command: postgres -N 300 -d 1
+  restart: always
 
 psql:
   image: turistforeningen/sherpa-postgres:latest
