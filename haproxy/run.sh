@@ -1,5 +1,6 @@
 #!/bin/bash
 docker run -d \
+  --privileged \
   --name=haproxy \
   --restart=always \
   --add-host docker0:172.17.42.1 \
