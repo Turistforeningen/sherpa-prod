@@ -1,5 +1,5 @@
-[submodule "sherpadb/private-data"]
-	path = sherpadb/private-data
+[submodule "db/private-data"]
+	path = db/private-data
 	url = git.hw.dnt.no:~/private-data/private-data
 [submodule "sherpa/sherpa"]
 	path = sherpa/sherpa
