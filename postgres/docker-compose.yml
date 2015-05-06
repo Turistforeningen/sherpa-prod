@@ -12,10 +12,7 @@ postgres:
   restart: always
 
 psql:
-  image: turistforeningen/sherpa-postgres:latest
-  volumes:
-    - private-data:/private-data:ro
+  build: .
   links:
     - postgres
   command: /bin/true
-
