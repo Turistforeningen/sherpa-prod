@@ -103,7 +103,7 @@ if [ -z ${PORT} ]; then
   # Hard deployments: Re-enable the previous deployment only if the rollback was successfull
   # (And if the new deployment SHA differs from the previous)
   if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
-    read -p "Re-enable the previous deployment? [y/N] " yn
+    read -p "Re-enable the previous deployment ${OLD_SHA} ? [y/N] " yn
     case $yn in
       [Yy]*) docker exec -it haproxy ./route-backend.sh ${OLD_PORT};;
     esac
