@@ -72,3 +72,7 @@ if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
   echo "Stopping old Sherpa containers..."
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
 fi
+
+# Build successful; commit and push the new deployment
+git commit -m "Deploy ${NEW_SHA}" sherpa/sherpa
+git push
