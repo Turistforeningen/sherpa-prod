@@ -8,7 +8,7 @@ git submodule update --init --recursive
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
 echo "Previous build SHA was ${OLD_SHA}"
 
-# Updat
+# Pull
 echo "Updating Sherpa repo..."
 (
   cd sherpa/sherpa
