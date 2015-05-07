@@ -31,6 +31,14 @@ docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} up -d
 HOST=`docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} port www 8080`
 PORT=`echo ${HOST} | sed 's/0.0.0.0://'`
 
+# Check port
+if [ -z ${PORT} ]; then
+  docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} ps
+  echo "New builds appears to have no exposed port! Who broke the build?"
+  echo "https://youtu.be/DJ001Kgz5wc"
+  exit 1
+fi
+
 # CURL like you mean it!
 # curl --verbose -o /dev/null -H "Host: www.dnt.no" 0.0.0.0:32776/
 # curl -sI -H "Host: www.dnt.no" ${HOST} | grep HTTP
