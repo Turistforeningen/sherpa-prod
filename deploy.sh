@@ -11,7 +11,7 @@ echo "Updating Sherpa repo..."
   cd sherpa/sherpa
   git pull -f origin
   git reset --hard HEAD
-  git submodule update
+  git submodule update --init --recursive
 )
 
 NEW_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
