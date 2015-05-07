@@ -2,6 +2,17 @@
 
 COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
 
+SHERPA_COMMIT=$1
+SHERPA_BRANCH=$2
+
+if [ -z ${SHERPA_COMMIT} ]; then
+  SHERPA_COMMIT=HEAD
+fi
+
+if [ -z ${SHERPA_BRANCH} ]; then
+  SHERPA_BRANCH=docker-prod-settings
+fi
+
 # Update submodules
 git pull origin master
 git submodule update --init --recursive
@@ -13,8 +24,8 @@ echo "Previous build SHA was ${OLD_SHA}"
 echo "Updating Sherpa repo..."
 (
   cd sherpa/sherpa
-  git pull -f origin
-  git reset --hard HEAD
+  git pull -f origin ${SHERPA_BRANCH}
+  git reset --hard ${SHERPA_COMMIT}
   git submodule update --init --recursive
 )
 
