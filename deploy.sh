@@ -6,20 +6,12 @@ DEPLOYMENT_METHOD=$1
 SHERPA_COMMIT=$2
 SHERPA_BRANCH=$3
 
-case "${DEPLOYMENT_METHOD}" in
-  soft)
-    echo "Initiating soft deployment..."
-    ;;
+if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
+  echo "Usage: $0 soft|hard [commit[ branch]]"
+  exit 1
+fi
 
-  hard)
-    echo "Initiating hard deployment..."
-    ;;
-
-  *)
-    echo "Usage: $0 soft|hard [commit[ branch]]"
-    exit 1
-    ;;
-esac
+echo "Initiating ${DEPLOYMENT_METHOD} deployment..."
 
 if [ -z ${SHERPA_COMMIT} ]; then
   SHERPA_COMMIT=HEAD
