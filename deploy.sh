@@ -2,8 +2,24 @@
 
 COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
 
-SHERPA_COMMIT=$1
-SHERPA_BRANCH=$2
+DEPLOYMENT_METHOD=$1
+SHERPA_COMMIT=$2
+SHERPA_BRANCH=$3
+
+case "${DEPLOYMENT_METHOD}" in
+  soft)
+    echo "Initiating soft deployment..."
+    ;;
+
+  hard)
+    echo "Initiating hard deployment..."
+    ;;
+
+  *)
+    echo "Usage: $0 soft|hard [commit[ branch]]"
+    exit 1
+    ;;
+esac
 
 if [ -z ${SHERPA_COMMIT} ]; then
   SHERPA_COMMIT=HEAD
@@ -36,6 +52,12 @@ echo "New build SHA is ${OLD_SHA}"
 echo "Building Sherpa containers..."
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} pull
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build
+
+# Hard deployments: remove the current backend before migrating
+if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
+  echo "Removing current backend from rotation..."
+  docker exec -it haproxy ./route-backend.sh
+fi
 
 # Migrate
 echo "Running database migrations..."
