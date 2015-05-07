@@ -74,5 +74,5 @@ if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
 fi
 
 # Build successful; commit and push the new deployment
-git commit -m "Deploy ${NEW_SHA}" sherpa/sherpa
+git commit -m "Deploy Turistforeningen/sherpa@${NEW_SHA}" sherpa/sherpa
 git push
