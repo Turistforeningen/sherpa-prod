@@ -2,7 +2,8 @@
 
 COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
 
-OLD_SHA=`cd sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`
+OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
+echo "Previous build SHA was ${OLD_SHA}"
 
 # Updat
 echo "Updating Sherpa repo..."
@@ -13,7 +14,8 @@ echo "Updating Sherpa repo..."
   git submodule update
 )
 
-NEW_SHA=`cd sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`
+NEW_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
+echo "New build SHA is ${OLD_SHA}"
 
 # Build
 echo "Building Sherpa containers..."
