@@ -90,27 +90,29 @@ PORT=`echo ${HOST} | sed 's/0.0.0.0://'`
 
 # Check port
 if [ -z ${PORT} ]; then
-  docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} ps
   echo "New builds appears to have no exposed port! Who broke the build?"
   echo "https://youtu.be/DJ001Kgz5wc"
 
-  # Hard deployments: Ask user to clean up the database before re-enabling previous deployment
-  # (If it differs from the new deployment commit)
+  # Roll back migrations if any
+  echo
+  read -p "Open a shell to roll back migrations? [y/N] " yn
+  case $yn in
+    [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash;;
+  esac
+
+  # Hard deployments: Re-enable the previous deployment only if the rollback was successfull
+  # (And if the new deployment SHA differs from the previous)
   if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
-    echo
-
-    read -p "Open a shell to roll back migrations? [y/N] " yn
-    case $yn in
-      [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash ;;
-    esac
-
     read -p "Re-enable the previous deployment? [y/N] " yn
     case $yn in
       [Yy]*) docker exec -it haproxy ./route-backend.sh ${OLD_PORT};;
     esac
-
-    echo "Done, now go clean up your mess."
   fi
+
+  echo
+  docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} ps
+  echo
+  echo "Done, now go clean up your mess."
   exit 1
 fi
 
