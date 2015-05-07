@@ -34,6 +34,8 @@ git pull origin master
 git submodule update --init --recursive
 
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
+OLD_HOST=`docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} port www 8080`
+OLD_PORT=`echo ${OLD_HOST} | sed 's/0.0.0.0://'`
 echo "Previous build SHA was ${OLD_SHA}"
 
 # Pull
@@ -67,6 +69,12 @@ docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa ./manage.py migr
 MIGRATION_STATUS=$?
 if [ $MIGRATION_STATUS -ne 0 ]; then
   echo "Migration exited with code $MIGRATION_STATUS; aborting deployment..."
+
+  # Re-add the old deployment backend
+  if [ "$DEPLOYMENT_METHOD" = "hard"]; then
+    echo "Re-adding the previous deployment backend."
+    docker exec -it haproxy ./route-backend.sh ${OLD_PORT}
+  fi
   exit 1
 fi
 
@@ -82,6 +90,23 @@ if [ -z ${PORT} ]; then
   docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} ps
   echo "New builds appears to have no exposed port! Who broke the build?"
   echo "https://youtu.be/DJ001Kgz5wc"
+
+  # Hard deployments: Ask user to clean up the database before re-enabling previous deployment
+  if [ "$DEPLOYMENT_METHOD" = "hard"]; then
+    echo
+
+    read -p "Open a shell to roll back migrations? [y/N] " yn
+    case $yn in
+      [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash ;;
+    esac
+
+    read -p "Re-enable the previous deployment? [y/N] " yn
+    case $yn in
+      [Yy]*) docker exec -it haproxy ./route-backend.sh ${OLD_PORT};;
+    esac
+
+    echo "Done, now go clean up your mess."
+  fi
   exit 1
 fi
 
