@@ -34,9 +34,11 @@ git pull
 git submodule update --init --recursive
 
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
-OLD_HOST=`docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} port www 8080`
-OLD_PORT=`echo ${OLD_HOST} | sed 's/0.0.0.0://'`
-echo "Previous build SHA was ${OLD_SHA}"
+if [ -n ${OLD_SHA} ]; then
+  OLD_HOST=`docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} port www 8080`
+  OLD_PORT=`echo ${OLD_HOST} | sed 's/0.0.0.0://'`
+  echo "Previous build SHA was ${OLD_SHA}"
+fi
 
 # Pull
 echo "Updating Sherpa repo..."
@@ -56,7 +58,7 @@ docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} pull
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build
 
 # Hard deployments: remove the current backend before migrating
-if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
+if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
   echo "Removing current backend from rotation..."
   docker exec -it haproxy ./route-backend.sh
 fi
@@ -71,7 +73,7 @@ if [ $MIGRATION_STATUS -ne 0 ]; then
   echo "Migration exited with code $MIGRATION_STATUS; aborting deployment..."
 
   # Re-add the old deployment backend
-  if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
+  if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     echo "Re-adding the previous deployment backend."
     docker exec -it haproxy ./route-backend.sh ${OLD_PORT}
   fi
@@ -92,7 +94,7 @@ if [ -z ${PORT} ]; then
   echo "https://youtu.be/DJ001Kgz5wc"
 
   # Hard deployments: Ask user to clean up the database before re-enabling previous deployment
-  if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
+  if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     echo
 
     read -p "Open a shell to roll back migrations? [y/N] " yn
