@@ -2,6 +2,9 @@
 
 COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
 
+# Update submodules
+git submodule update --init --recursive
+
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
 echo "Previous build SHA was ${OLD_SHA}"
 
