@@ -21,7 +21,7 @@ fi
 
 echo "Deploying ${SHERPA_BRANCH} to prod with ${DEPLOYMENT_METHOD} migrations..."
 
-# Update submodules
+# Update submodules in order to know what the currently deployed commit is
 git pull
 git submodule update --init --recursive
 
