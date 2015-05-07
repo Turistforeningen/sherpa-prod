@@ -97,6 +97,7 @@ if [ -z ${PORT} ]; then
   echo
   read -p "Open a shell to roll back migrations? [y/N] " yn
   case $yn in
+    echo "Opening shell; remember that output isn't flushed so the shell might be ready without telling you so."
     [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash;;
   esac
 
