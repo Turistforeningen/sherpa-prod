@@ -3,6 +3,7 @@
 COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
 
 # Update submodules
+git pull origin master
 git submodule update --init --recursive
 
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
