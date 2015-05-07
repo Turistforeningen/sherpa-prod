@@ -103,7 +103,7 @@ if [ -z ${PORT} ]; then
       ;;
   esac
 
-  # Hard deployments: Re-enable the previous deployment only if the rollback was successfull
+  # Hard deployments: Re-enable the previous deployment only if the rollback was successful
   # (And if the new deployment SHA differs from the previous)
   if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     read -p "Re-enable the previous deployment ${OLD_SHA} ? [y/N] " yn
