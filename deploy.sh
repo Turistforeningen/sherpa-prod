@@ -11,8 +11,6 @@ if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; t
   exit 1
 fi
 
-echo "Initiating ${DEPLOYMENT_METHOD} deployment..."
-
 if [ -z ${SHERPA_COMMIT} ]; then
   SHERPA_COMMIT=HEAD
 fi
@@ -20,6 +18,8 @@ fi
 if [ -z ${SHERPA_BRANCH} ]; then
   SHERPA_BRANCH=docker-prod-settings
 fi
+
+echo "Deploying ${SHERPA_BRANCH} to prod with ${DEPLOYMENT_METHOD} migrations..."
 
 # Update submodules
 git pull
