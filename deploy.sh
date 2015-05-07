@@ -52,9 +52,8 @@ fi
 echo "Update HAProxy route..."
 docker exec -it haproxy ./route-backend.sh ${PORT}
 
-# Stop
-# @TODO check whu this is not working
-if [ ${OLD_SHA} != ${NEW_SHA} ]; then
+# Stop old
+if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
   echo "Stopping old Sherpa containers..."
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
 fi
