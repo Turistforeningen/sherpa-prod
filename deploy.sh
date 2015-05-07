@@ -71,7 +71,7 @@ if [ $MIGRATION_STATUS -ne 0 ]; then
   echo "Migration exited with code $MIGRATION_STATUS; aborting deployment..."
 
   # Re-add the old deployment backend
-  if [ "$DEPLOYMENT_METHOD" = "hard"]; then
+  if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
     echo "Re-adding the previous deployment backend."
     docker exec -it haproxy ./route-backend.sh ${OLD_PORT}
   fi
@@ -92,7 +92,7 @@ if [ -z ${PORT} ]; then
   echo "https://youtu.be/DJ001Kgz5wc"
 
   # Hard deployments: Ask user to clean up the database before re-enabling previous deployment
-  if [ "$DEPLOYMENT_METHOD" = "hard"]; then
+  if [ "$DEPLOYMENT_METHOD" = "hard" ]; then
     echo
 
     read -p "Open a shell to roll back migrations? [y/N] " yn
