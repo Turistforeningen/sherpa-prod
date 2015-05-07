@@ -52,6 +52,15 @@ echo "Updating Sherpa repo..."
 NEW_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
 echo "New build SHA is ${OLD_SHA}"
 
+if [[ -n ${OLD_SHA} && "${OLD_SHA}" = "${NEW_SHA}" ]]; then
+  echo "You are deploying over the same commit as the previous deployment. This means downtime while building and disabled auto-restore on failure."
+  read -p "Really continue? [y/N] " yn
+  case $yn in
+    [Yy]*) ;;
+    *) exit 0;;
+  esac
+fi
+
 # Build
 echo "Building Sherpa containers..."
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} pull
@@ -72,8 +81,8 @@ MIGRATION_STATUS=$?
 if [ $MIGRATION_STATUS -ne 0 ]; then
   echo "Migration exited with code $MIGRATION_STATUS; aborting deployment..."
 
-  # Re-add the old deployment backend
-  if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
+  # Re-add the old deployment backend (if it differs from the new deployment commit)
+  if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     echo "Re-adding the previous deployment backend."
     docker exec -it haproxy ./route-backend.sh ${OLD_PORT}
   fi
@@ -94,7 +103,8 @@ if [ -z ${PORT} ]; then
   echo "https://youtu.be/DJ001Kgz5wc"
 
   # Hard deployments: Ask user to clean up the database before re-enabling previous deployment
-  if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
+  # (If it differs from the new deployment commit)
+  if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     echo
 
     read -p "Open a shell to roll back migrations? [y/N] " yn
