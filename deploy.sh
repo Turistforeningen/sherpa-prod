@@ -41,6 +41,13 @@ docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build
 echo "Running database migrations..."
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa ./manage.py migrate
 
+# Check migration status
+MIGRATION_STATUS=$?
+if [ $MIGRATION_STATUS -ne 0 ]; then
+  echo "Migration exited with code $MIGRATION_STATUS; aborting deployment..."
+  exit 1
+fi
+
 # Start
 echo "Starting Sherpa containers..."
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} up -d
