@@ -42,7 +42,7 @@ echo "Updating Sherpa repo..."
 )
 
 NEW_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
-echo "New build SHA is ${OLD_SHA}"
+echo "New build SHA is ${NEW_SHA}"
 
 if [[ -n ${OLD_SHA} && "${OLD_SHA}" = "${NEW_SHA}" ]]; then
   echo "You are deploying over the same commit as the previous deployment. This means downtime while building and disabled auto-restore on failure."
@@ -97,8 +97,10 @@ if [ -z ${PORT} ]; then
   echo
   read -p "Open a shell to roll back migrations? [y/N] " yn
   case $yn in
-    echo "Opening shell; remember that output isn't flushed so the shell might be ready without telling you so."
-    [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash;;
+    [Yy]*)
+      echo "Opening shell; remember that output isn't flushed so the shell might be ready without telling you so."
+      docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} run --rm sherpa /bin/bash
+      ;;
   esac
 
   # Hard deployments: Re-enable the previous deployment only if the rollback was successfull
