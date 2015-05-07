@@ -10,6 +10,7 @@ echo "Updating Sherpa repo..."
   cd sherpa/sherpa
   git pull -f origin
   git reset --hard HEAD
+  git submodule update
 )
 
 NEW_SHA=`cd sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`
@@ -42,6 +43,7 @@ echo "Update HAProxy route..."
 docker exec -it haproxy ./route-backend.sh ${PORT}
 
 # Stop
+# @TODO check whu this is not working
 if [ ${OLD_SHA} != ${NEW_SHA} ]; then
   echo "Stopping old Sherpa containers..."
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
