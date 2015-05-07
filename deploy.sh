@@ -30,7 +30,7 @@ if [ -z ${SHERPA_BRANCH} ]; then
 fi
 
 # Update submodules
-git pull origin master
+git pull
 git submodule update --init --recursive
 
 OLD_SHA="`cd sherpa/sherpa; git log -n 1 --pretty=format:'%h' --abbrev-commit`"
