@@ -6,6 +6,8 @@ RUN apt-get -y update && apt-get -y install \
   iptables \
   ca-certificates
 
+COPY 50x-turbo.html /usr/local/etc/haproxy/errors/50x-turbo.html
+
 COPY ssl-certs/*.pem /etc/ssl/private/
 # RUN chmod 400 /etc/ssl/privat/*.pem
 
