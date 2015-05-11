@@ -36,7 +36,9 @@ fi
 echo "Updating Sherpa repo..."
 (
   cd sherpa/sherpa
-  git pull -f origin ${SHERPA_BRANCH}
+  git fetch origin ${SHERPA_BRANCH}
+  git reset --hard origin/${SHERPA_BRANCH}
+  git pull origin ${SHERPA_BRANCH}
   git reset --hard ${SHERPA_COMMIT}
   git submodule update --init --recursive
 )
