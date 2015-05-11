@@ -1,6 +1,9 @@
 [submodule "db/private-data"]
 	path = db/private-data
 	url = git.hw.dnt.no:~/private-data/private-data
+[submodule "haproxy/ssl-certs"]
+	path = haproxy/ssl-certs
+	url = git.hw.dnt.no:~/repos/ssl-certs
 [submodule "sherpa/sherpa"]
 	path = sherpa/sherpa
 	url = git@github.com:Turistforeningen/sherpa.git
