@@ -17,5 +17,8 @@ COPY sha.sh /cron/sha.sh
 COPY run-sherpa.sh /cron/run-sherpa.sh
 RUN chmod +x /cron/pull.sh /cron/sha.sh /cron/run-sherpa.sh
 
+# We have bigger plans for log aggregation, but for now, log all crontab output to this file
+RUN touch /cron/logfile
+
 COPY crontab /cron/crontab
 RUN cat /cron/crontab | crontab && rm /cron/crontab
