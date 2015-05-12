@@ -1,10 +1,8 @@
+# Note that backups are started at 03:30 (at the time of this writing); see sherpa-prod/backups/crontab for changes
+
   0  2  *   *   *  /cron/run-sherpa.sh ./manage.py synchronize_aktiviteter
   0  3  *   *   *  /cron/run-sherpa.sh ./manage.py clearsessions
   3  3  *   *   *  /cron/run-sherpa.sh ./manage.py update_user_status
-
-# Note that backups are started (at the time of this writing) at 03:30
-# For updates, see: https://github.com/Turistforeningen/sherpa-docker/blob/master/backups/crontab#L2
-
   0  4  *   *   *  /cron/run-sherpa.sh ./manage.py sync_s3_dev
 
 # ┬  ┬  ┬   ┬   ┬
