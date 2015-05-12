@@ -17,3 +17,8 @@ COPY backups.py /backups/
 COPY requirements.txt /backups/
 RUN chmod +x /backups/backups.py
 RUN pip install -r /backups/requirements.txt
+RUN touch /backups/backups.log
+
+# Install the crontab
+COPY crontab /backups/
+RUN cat /backups/crontab | crontab && rm /backups/crontab
