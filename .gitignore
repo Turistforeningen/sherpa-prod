@@ -1,5 +1,7 @@
+*.swp
+*.swo
+.DS_Store
+
 current
 previous
 sherpa-*
-.DS_Store
-portfile
