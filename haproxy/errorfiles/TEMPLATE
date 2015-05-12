@@ -1,0 +1,76 @@
+HTTP/1.0 {{ ERROR_HTTP_STATUS }}
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Den Norske Turistforening</title>
+  <style>
+    body {
+      font-family: Tahoma, Verdana, Arial, sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    @media (max-width: 979px) {
+      body {
+        margin-top: 20px;
+      }
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: normal;
+    }
+
+    p {
+      width: 380px;
+      font-size: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img {
+      margin-top: 40px;
+      max-width: 100%;
+    }
+  </style>
+  <script>
+  if(document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", load, false);
+  } else {
+    window.attachEvent("onload", load, false);
+  }
+
+  function load() {
+    var el = document.getElementById("translate");
+    if(el.addEventListener) {
+      el.addEventListener("click", translate, false);
+    } else {
+      el.attachEvent("onclick", translate, false);
+    }
+  }
+
+  function translate() {
+    document.getElementById("header").firstChild.nodeValue = "DNTs websites are currently down for temporary maintenance.";
+    document.getElementById("desc").firstChild.nodeValue = "Turbo is on the case. Please be patient; we'll be back as soon as possible.";
+    document.body.removeChild(document.getElementById("english"));
+  }
+  </script>
+</head>
+<body>
+
+  <h1 id="header">Turistforeningens nettsider er nede for midlertidig vedlikehold.</h1>
+  <p id="desc">Turbo er på saken. Vær tålmodig, så skal vi få sidene opp igjen så snart som mulig.</p>
+
+  <img alt="Turbo griller pølser" src="data:image/jpeg;base64,{{ ERROR_B64_IMAGE }}">
+
+  <p id="english">
+    <a href="javascript:undefined" id="translate">English</a>
+  </p>
+
+</body>
+</html>
