@@ -1,5 +1,7 @@
 FROM ubuntu:14.04
 
+# Set the correct timezone so that cronjobs run when expected
+RUN ln -sf /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 RUN apt-get -y update
 RUN apt-get -y --no-install-recommends install cron wget git
 RUN wget --no-check-certificate -qO- https://get.docker.com/ | sh
