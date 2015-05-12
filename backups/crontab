@@ -1,4 +1,6 @@
- 30  3  *   *   *  /backups/backups.py >> /backups/backups.log 2>&1
+# Note that the environment variable can't be exported from docker-compose settings as it's not inherited by cron.
+
+ 30  3  *   *   *  export PYTHONUNBUFFERED=0; /backups/backups.py >> /backups/backups.log 2>&1
 
 # ┬  ┬  ┬   ┬   ┬
 # │  │  │   │   │
