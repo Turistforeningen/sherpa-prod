@@ -15,6 +15,7 @@ WORKDIR /backups
 # Set up codebase
 COPY backups.py /backups/
 COPY requirements.txt /backups/
+COPY private-data/* /backups/
 RUN chmod +x /backups/backups.py
 RUN pip install -r /backups/requirements.txt
 RUN touch /backups/backups.log
