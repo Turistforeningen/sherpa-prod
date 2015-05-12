@@ -6,6 +6,11 @@ RUN apt-get -y update && apt-get -y install \
   iptables \
   ca-certificates
 
+COPY errorfiles/500.html /usr/local/etc/haproxy/errors/500.html
+COPY errorfiles/502.html /usr/local/etc/haproxy/errors/502.html
+COPY errorfiles/503.html /usr/local/etc/haproxy/errors/503.html
+COPY errorfiles/504.html /usr/local/etc/haproxy/errors/504.html
+
 COPY ssl-certs/*.pem /etc/ssl/private/
 # RUN chmod 400 /etc/ssl/privat/*.pem
 
