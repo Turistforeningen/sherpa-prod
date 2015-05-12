@@ -2,7 +2,6 @@
 from datetime import datetime, timedelta
 import subprocess
 import time
-import os
 
 from sh import git, tar, rm
 import boto
