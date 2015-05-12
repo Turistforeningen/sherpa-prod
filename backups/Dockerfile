@@ -13,12 +13,12 @@ RUN mkdir /backups
 WORKDIR /backups
 
 # Set up codebase
-COPY backups.py /backups/
-COPY requirements.txt /backups/
-COPY private-data/* /backups/
-RUN chmod +x /backups/backups.py
-RUN pip install -r /backups/requirements.txt
 RUN touch /backups/backups.log
+COPY requirements.txt /backups/
+RUN pip install -r /backups/requirements.txt
+COPY backups.py /backups/
+RUN chmod +x /backups/backups.py
+COPY private-data/* /backups/
 
 # Install the crontab
 COPY crontab /backups/
