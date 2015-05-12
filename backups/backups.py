@@ -154,7 +154,7 @@ try:
                     # Just retry the entire backup. If this was a timeout error, the retry will now skip files
                     # successfully uploaded during the previous round and we'll hope that the remaining data is
                     # can be successfully uploaded during the next attempt without a new timeout.
-                    attempt_with_retries(i+1)
+                    attempt_with_retries(i + 1)
                 else:
                     # Can't seem to get rid of this failure - give up backuping and let it get sent to Sentry
                     raise
