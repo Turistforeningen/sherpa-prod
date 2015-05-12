@@ -7,6 +7,7 @@ RUN wget --no-check-certificate -qO- https://get.docker.com/ | sh
 RUN wget -qO- https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 RUN ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+RUN ln -s /usr/local/bin/python /usr/bin/python
 
 # Work in the /backups directory
 RUN mkdir /backups
