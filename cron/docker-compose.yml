@@ -1,0 +1,3 @@
+cron:
+  build: .
+  command: cron -f
