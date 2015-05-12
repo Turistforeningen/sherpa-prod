@@ -34,9 +34,9 @@ try:
             if key.exists():
                 key.delete()
 
-    sherpa_bucket = [b for b in settings.buckets if b['name'] == 'cdn.turistforeningen.no'][0]
+    sherpa_bucket = [b for b in settings.buckets if b['name'] == 'turistforeningen'][0]
     conn = boto.connect_s3(sherpa_bucket['creds']['access_key'], sherpa_bucket['creds']['secret_key'])
-    buck = conn.get_bucket('cdn.turistforeningen.no')
+    buck = conn.get_bucket('turistforeningen')
 
     #
     # Sherpa-databasen
