@@ -16,7 +16,7 @@ if [ -z ${SHERPA_COMMIT} ]; then
 fi
 
 if [ -z ${SHERPA_BRANCH} ]; then
-  SHERPA_BRANCH=docker-prod-settings
+  SHERPA_BRANCH=master
 fi
 
 echo "Deploying ${SHERPA_BRANCH} to prod with ${DEPLOYMENT_METHOD} migrations..."
