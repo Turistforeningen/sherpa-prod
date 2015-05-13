@@ -15,9 +15,8 @@ RUN ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 RUN mkdir /cron
 WORKDIR /cron
 
-# Clone sherpa-prod and add a read-only remote URL to the sherpa submodule
+# Clone sherpa-prod and the sherpa submodule
 RUN git clone https://github.com/Turistforeningen/sherpa-prod.git /cron/sherpa-prod
-RUN sed -i "s/git@github.com:Turistforeningen\/sherpa.git/https:\/\/github.com\/Turistforeningen\/sherpa.git/g" /cron/sherpa-prod/.gitmodules
 RUN cd /cron/sherpa-prod && git submodule update --init sherpa
 
 # Add cron tools
