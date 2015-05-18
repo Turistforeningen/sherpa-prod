@@ -5,14 +5,15 @@ data:
   entrypoint: /bin/true
 
 postgres:
-  image: turistforeningen/sherpa-postgres:latest
+  build: .
   volumes_from:
     - data
   command: postgres -N 300 -d 1
   restart: always
 
 psql:
-  build: .
+  build: psql/
   links:
     - postgres
   command: /bin/true
+  env_file: private-data/s3backup.env
