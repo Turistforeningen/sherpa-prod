@@ -2,7 +2,7 @@
 PORT=$1
 
 if [ -z ${PORT} ]; then
-  echo "usage: restart.sh [PORT]"
+  echo "usage: $0 [PORT]"
   exit 1
 fi
 
