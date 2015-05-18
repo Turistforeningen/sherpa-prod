@@ -11,7 +11,3 @@ ENV LANG nb_NO.utf8
 # Add import script
 ADD import-prod.sh /import-prod.sh
 RUN chmod a+x /import-prod.sh
-
-# Add init script
-ADD initdb-sherpa.sh /docker-entrypoint-initdb.d/sherpa.sh
-
