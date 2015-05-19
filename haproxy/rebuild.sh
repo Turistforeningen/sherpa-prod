@@ -15,10 +15,10 @@ if [ -z ${PORT} ]; then
   esac
 fi
 
-./build.sh
+./build.sh || exit 1
 docker stop haproxy
 docker rm haproxy
-./start.sh
+./start.sh || exit 1
 docker exec haproxy ./route-backend.sh ${PORT}
 
 exit 0
