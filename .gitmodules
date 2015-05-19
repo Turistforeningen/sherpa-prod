@@ -13,3 +13,4 @@
 [submodule "backups/private-data"]
 	path = backups/private-data
 	url = git.hw.dnt.no:~/repos/backups/
+  branch = master
