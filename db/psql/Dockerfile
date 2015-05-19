@@ -1,4 +1,4 @@
-FROM turistforeningen/sherpa-postgres
+FROM turistforeningen/sherpa-postgres:latest
 
 # Install AWS cli
 RUN apt-get update \
