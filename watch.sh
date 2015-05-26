@@ -12,13 +12,13 @@ Simple utility to watch dnt.no when deploying new changes.
 
 Options:
   -h, --help=false      Print usage
-  --interval=0.2        Test interval
-  --path=doge/          Test path
+  -i, --interval=0.2    Test interval
+  -p, --path=doge/      Test path
 EOF
     exit 0
   fi
 
-  if [[ "${arg}" == "--interval" ]]; then
+  if [[ "${arg}" == "--interval" || "${arg}" == "-i" ]]; then
     arg_prev=WATCH_INTERVAL
   fi
 
@@ -26,7 +26,7 @@ EOF
     WATCH_INTERVAL=${arg}
   fi
 
-  if [[ "${arg}" == "--path" ]]; then
+  if [[ "${arg}" == "--path" || "${arg}" == "-p" ]]; then
     arg_prev=WATCH_PATH
   fi
 
