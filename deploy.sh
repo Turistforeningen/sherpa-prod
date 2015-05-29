@@ -18,7 +18,9 @@ if [[ "${DOCKER_MACHINE_ACTIVE}" != "app1.hw.dnt.no" ]]; then
   read -p "Do you want to deploy Sherpa to ${DOCKER_MACHINE_ACTIVE}? [y/N] " yn
   case $yn in
     [Yy]*) ;;
-    *) exit 0;;
+    *)
+      echo "You can set active Docker Host with 'docker-machine active app1.hw.dnt.no'"
+      exit 0;;
   esac
 fi
 
