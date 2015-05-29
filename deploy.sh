@@ -7,6 +7,7 @@ SHERPA_COMMIT=$2
 SHERPA_BRANCH=$3
 
 DOCKER_MACHINE_ACTIVE=`docker-machine active`
+DOCKER_COMPOSE_VERSION=`docker-compose --version`
 
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
   echo "Usage: $0 soft|hard [commit[ branch]]"
@@ -20,6 +21,11 @@ if [[ "${DOCKER_MACHINE_ACTIVE}" != "app1.hw.dnt.no" ]]; then
       exit 1
       ;;
   esac
+fi
+
+if [[ ! "${DOCKER_COMPOSE_VERSION}" =~ ^docker-compose\ 1.2. ]]; then
+  echo "Sorry, ${DOCKER_COMPOSE_VERSION} is not supported!"
+  exit 1
 fi
 
 if [ -z ${SHERPA_COMMIT} ]; then
