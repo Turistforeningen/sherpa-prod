@@ -6,9 +6,20 @@ DEPLOYMENT_METHOD=$1
 SHERPA_COMMIT=$2
 SHERPA_BRANCH=$3
 
+DOCKER_MACHINE_ACTIVE=`docker-machine active`
+
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
   echo "Usage: $0 soft|hard [commit[ branch]]"
   exit 1
+fi
+
+if [[ "${DOCKER_MACHINE_ACTIVE}" != "app1.hw.dnt.no" ]]; then
+  read -p "Do you want to deploy Sherpa to ${DOCKER_MACHINE_ACTIVE}? [y/N] " yn
+  case $yn in
+    [^Yy]*)
+      exit 1
+      ;;
+  esac
 fi
 
 if [ -z ${SHERPA_COMMIT} ]; then
