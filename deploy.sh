@@ -15,7 +15,7 @@ if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; t
 fi
 
 if [[ "${DOCKER_MACHINE_ACTIVE}" != "app1.hw.dnt.no" ]]; then
-  read -p "Do you want to deploy Sherpa to ${DOCKER_MACHINE_ACTIVE}? [y/N] " yn
+  read -p "Do you want to deploy Sherpa to '${DOCKER_MACHINE_ACTIVE}'? [y/N] " yn
   case $yn in
     [Yy]*) ;;
     *)
