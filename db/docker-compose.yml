@@ -16,4 +16,4 @@ psql:
   links:
     - postgres
   command: /bin/true
-  env_file: private-data/s3backup.env
+  env_file: secrets/s3backup.env

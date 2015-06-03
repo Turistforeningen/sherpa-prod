@@ -1,7 +1,3 @@
-[submodule "db/private-data"]
-	path = db/private-data
-	url = git.hw.dnt.no:~/private-data/private-data
-  branch = master
 [submodule "haproxy/ssl-certs"]
 	path = haproxy/ssl-certs
 	url = git.hw.dnt.no:~/repos/ssl-certs
@@ -14,3 +10,6 @@
 	path = backups/private-data
 	url = git.hw.dnt.no:~/repos/backups/
   branch = master
+[submodule "db/secrets"]
+	path = db/secrets
+	url = git.hw.dnt.no:~/repos/sherpa
