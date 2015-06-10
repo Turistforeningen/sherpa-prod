@@ -13,3 +13,6 @@
 [submodule "db/secrets"]
 	path = db/secrets
 	url = git.hw.dnt.no:~/repos/sherpa
+[submodule "statsd-librato/secrets"]
+	path = statsd-librato/secrets
+	url = git.hw.dnt.no:~/repos/statsd-librato/

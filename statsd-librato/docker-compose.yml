@@ -1,0 +1,3 @@
+data:
+  image: jcoene/statsd-librato
+  env_file: secrets/librato.env
