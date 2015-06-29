@@ -9,6 +9,12 @@ s3_file=$1
 
 echo "Downloading '${s3_file}' from S3..."
 aws s3 cp "${s3_path}${s3_file}" sherpa.gz
+AWS_STATUS=$?
+if [ $AWS_STATUS -ne 0 ]; then
+  echo "AWS CLI exited with code $AWS_STATUS; aborting import..."
+  exit 1
+fi
+
 gunzip -f sherpa.gz
 
 $PSQL -e <<EOSQL
