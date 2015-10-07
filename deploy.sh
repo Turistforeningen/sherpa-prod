@@ -20,12 +20,12 @@ if [[ "${DOCKER_MACHINE_ACTIVE}" != "${SHERPA_MACHINE_NAME}" ]]; then
   case $yn in
     [Yy]*) ;;
     *)
-      echo "You can set active Docker Host with 'docker-machine active ${SHERPA_MACHINE_NAME}'"
+      echo "You can set active Docker Host with 'docker-machine env ${SHERPA_MACHINE_NAME}'"
       exit 0;;
   esac
 fi
 
-if [[ ! "${DOCKER_COMPOSE_VERSION}" =~ ^docker-compose\ 1.2. ]]; then
+if [[ ! "${DOCKER_COMPOSE_VERSION}" =~ ^docker-compose\ version\:\ 1.4. ]]; then
   echo "Sorry, ${DOCKER_COMPOSE_VERSION} is not supported!"
   exit 1
 fi
