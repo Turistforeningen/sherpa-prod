@@ -8,18 +8,19 @@ SHERPA_BRANCH=$3
 
 DOCKER_MACHINE_ACTIVE=`docker-machine active`
 DOCKER_COMPOSE_VERSION=`docker-compose --version`
+SHERPA_MACHINE_NAME="app4.hw.dnt.no"
 
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
   echo "Usage: $0 soft|hard [commit[ branch]]"
   exit 1
 fi
 
-if [[ "${DOCKER_MACHINE_ACTIVE}" != "app1.hw.dnt.no" ]]; then
+if [[ "${DOCKER_MACHINE_ACTIVE}" != "${SHERPA_MACHINE_NAME}" ]]; then
   read -p "Do you want to deploy Sherpa to '${DOCKER_MACHINE_ACTIVE}'? [y/N] " yn
   case $yn in
     [Yy]*) ;;
     *)
-      echo "You can set active Docker Host with 'docker-machine active app1.hw.dnt.no'"
+      echo "You can set active Docker Host with 'docker-machine active ${SHERPA_MACHINE_NAME}'"
       exit 0;;
   esac
 fi
