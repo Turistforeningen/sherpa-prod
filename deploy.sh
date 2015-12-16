@@ -8,7 +8,7 @@ SHERPA_BRANCH=$3
 
 DOCKER_MACHINE_ACTIVE=`docker-machine active`
 DOCKER_COMPOSE_VERSION=`docker-compose --version`
-SHERPA_MACHINE_NAME="app4.hw.dnt.no"
+SHERPA_MACHINE_NAME="app1.hw.dnt.no"
 HAPROXY_CONTAINER=`pushd haproxy > /dev/null; docker-compose ps -q; popd > /dev/null`
 
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
