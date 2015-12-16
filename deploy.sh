@@ -9,6 +9,7 @@ SHERPA_BRANCH=$3
 DOCKER_MACHINE_ACTIVE=`docker-machine active`
 DOCKER_COMPOSE_VERSION=`docker-compose --version`
 SHERPA_MACHINE_NAME="app4.hw.dnt.no"
+HAPROXY_CONTAINER=`pushd haproxy > /dev/null; docker-compose ps -q; popd > /dev/null`
 
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
   echo "Usage: $0 soft|hard [commit[ branch]]"
@@ -82,7 +83,7 @@ docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build
 # Hard deployments: remove the current backend before migrating
 if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
   echo "Removing current backend from rotation..."
-  docker exec -it haproxy ./route-backend.sh
+  docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh
 fi
 
 # Migrate
@@ -97,7 +98,7 @@ if [ $MIGRATION_STATUS -ne 0 ]; then
   # Re-add the old deployment backend (if it differs from the new deployment commit)
   if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     echo "Re-adding the previous deployment backend."
-    docker exec -it haproxy ./route-backend.sh ${OLD_PORT}
+    docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${OLD_PORT}
   fi
   exit 1
 fi
@@ -129,7 +130,7 @@ if [ -z ${PORT} ]; then
   if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" && "$DEPLOYMENT_METHOD" = "hard" ]]; then
     read -p "Re-enable the previous deployment ${OLD_SHA} ? [y/N] " yn
     case $yn in
-      [Yy]*) docker exec -it haproxy ./route-backend.sh ${OLD_PORT};;
+      [Yy]*) docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${OLD_PORT};;
     esac
   fi
 
@@ -149,7 +150,7 @@ fi
 
 # Route
 echo "Update HAProxy route..."
-docker exec -it haproxy ./route-backend.sh ${PORT}
+docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${PORT}
 
 # Stop old
 if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then

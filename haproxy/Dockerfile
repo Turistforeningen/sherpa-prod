@@ -12,12 +12,10 @@ COPY errorfiles/503.html /usr/local/etc/haproxy/errors/503.html
 COPY errorfiles/504.html /usr/local/etc/haproxy/errors/504.html
 
 COPY ssl-certs/*.pem /etc/ssl/private/
-# RUN chmod 400 /etc/ssl/privat/*.pem
 
 COPY route-backend.sh route-backend.sh
 RUN chmod +x route-backend.sh
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
-# RUN haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg
 
 EXPOSE 80 443

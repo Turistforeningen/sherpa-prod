@@ -1,0 +1,9 @@
+haproxy:
+  build: .
+  privileged: true
+  extra_hosts:
+  - docker0:172.17.0.1
+  ports:
+  - "0.0.0.0:80:80"
+  - "0.0.0.0:443:443"
+  restart: always
