@@ -18,12 +18,12 @@ try:
     now = datetime.now()
 
     # Keep 30 days of daily backups and 1 year of monthly backups
-    def clean_old_backups(buck, prefix, name):
+    def clean_old_backups(buck, prefix, tarball, name):
 
         # Delete year-old backups
         date = (now - timedelta(days=365)).strftime(dateformat)
-        key_gz = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, date))
-        key_xz = boto.s3.key.Key(buck, name="%s%s-%s.txz" % (prefix, name, date))
+        key_gz = boto.s3.key.Key(buck, name="%s%s-%s.%sgz" % (prefix, name, 't' if tarball else '', date))
+        key_xz = boto.s3.key.Key(buck, name="%s%s-%s.%sxz" % (prefix, name, 't' if tarball else '', date))
         if key_gz.exists():
             key_gz.delete()
         if key_xz.exists():
@@ -32,8 +32,8 @@ try:
         # Delete month-old backups, except for the first in the month
         then = now - timedelta(days=30)
         if then.day != 1:
-            key_gz = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, then.strftime(dateformat)))
-            key_xz = boto.s3.key.Key(buck, name="%s%s-%s.txz" % (prefix, name, then.strftime(dateformat)))
+            key_gz = boto.s3.key.Key(buck, name="%s%s-%s.%sgz" % (prefix, name, then.strftime(dateformat), 't' if tarball else ''))
+            key_xz = boto.s3.key.Key(buck, name="%s%s-%s.%sxz" % (prefix, name, then.strftime(dateformat), 't' if tarball else ''))
             if key_gz.exists():
                 key_gz.delete()
             if key_xz.exists():
@@ -58,7 +58,7 @@ try:
     ], stdin=subprocess.PIPE, shell=True)
     key.set_contents_from_string(db)
 
-    clean_old_backups(buck, path, name)
+    clean_old_backups(buck, path, False, name)
 
     #
     # Kodebasen
@@ -77,7 +77,7 @@ try:
 
     rm('-r', 'sherpa/')
     rm(filename)
-    clean_old_backups(buck, path, name)
+    clean_old_backups(buck, path, True, name)
 
     #
     # Now backup the ENTIRE S3 (including backup folder) to our local on-site FTP server
