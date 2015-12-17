@@ -17,19 +17,9 @@ try:
     dateformat = '%Y%m%d'
     now = datetime.now()
 
-    # Keep 30 days of daily backups and 1 year of monthly backups
+    # Keep 30 days of daily backups, 1 year of monthly backups, and unlimited yearly backups
     def clean_old_backups(buck, prefix, tarball, name):
-
-        # Delete year-old backups
-        date = (now - timedelta(days=365)).strftime(dateformat)
-        key_gz = boto.s3.key.Key(buck, name="%s%s-%s.%sgz" % (prefix, name, 't' if tarball else '', date))
-        key_xz = boto.s3.key.Key(buck, name="%s%s-%s.%sxz" % (prefix, name, 't' if tarball else '', date))
-        if key_gz.exists():
-            key_gz.delete()
-        if key_xz.exists():
-            key_xz.delete()
-
-        # Delete month-old backups, except for the first in the month
+        # Delete any month-old backup except for the first in the month
         then = now - timedelta(days=30)
         if then.day != 1:
             key_gz = boto.s3.key.Key(buck, name="%s%s-%s.%sgz" % (prefix, name, then.strftime(dateformat), 't' if tarball else ''))
