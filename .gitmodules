@@ -10,9 +10,9 @@
 	path = backups/secrets
 	url = git.hw.dnt.no:~/repos/backups
   branch = master
-[submodule "db/secrets"]
-	path = db/secrets
-	url = git.hw.dnt.no:~/repos/sherpa
 [submodule "statsd-librato/secrets"]
 	path = statsd-librato/secrets
 	url = git.hw.dnt.no:~/repos/statsd-librato/
+[submodule "db/secrets"]
+	path = db/secrets
+	url = git.hw.dnt.no:~/repos/sherpa-db/
