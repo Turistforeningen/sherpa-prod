@@ -22,16 +22,22 @@ try:
 
         # Delete year-old backups
         date = (now - timedelta(days=365)).strftime(dateformat)
-        key = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, date))
-        if key.exists():
-            key.delete()
+        key_gz = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, date))
+        key_xz = boto.s3.key.Key(buck, name="%s%s-%s.txz" % (prefix, name, date))
+        if key_gz.exists():
+            key_gz.delete()
+        if key_xz.exists():
+            key_xz.delete()
 
         # Delete month-old backups, except for the first in the month
         then = now - timedelta(days=30)
         if then.day != 1:
-            key = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, then.strftime(dateformat)))
-            if key.exists():
-                key.delete()
+            key_gz = boto.s3.key.Key(buck, name="%s%s-%s.tgz" % (prefix, name, then.strftime(dateformat)))
+            key_xz = boto.s3.key.Key(buck, name="%s%s-%s.txz" % (prefix, name, then.strftime(dateformat)))
+            if key_gz.exists():
+                key_gz.delete()
+            if key_xz.exists():
+                key_xz.delete()
 
     sherpa_bucket = [b for b in settings.buckets if b['name'] == 'turistforeningen'][0]
     conn = boto.connect_s3(sherpa_bucket['creds']['access_key'], sherpa_bucket['creds']['secret_key'])
@@ -44,11 +50,11 @@ try:
     print("Dumping sherpa db to S3...")
     name = 'sherpa'
     path = 'backups/sherpa/'
-    filename = '%s-%s.gz' % (name, now.strftime(dateformat))
+    filename = '%s-%s.xz' % (name, now.strftime(dateformat))
 
     key = boto.s3.key.Key(buck, name="%s%s" % (path, filename))
     db = subprocess.check_output([
-        'docker exec db_postgres_1 /usr/bin/pg_dump -U postgres -Fc sherpa | gzip'
+        'docker exec db_postgres_1 /usr/bin/pg_dump -U postgres -Fc sherpa | xz --compress'
     ], stdin=subprocess.PIPE, shell=True)
     key.set_contents_from_string(db)
 
@@ -61,10 +67,10 @@ try:
     print("Cloning git codebase and sending to S3...")
     name = 'sherpa'
     path = 'backups/kodebase/'
-    filename = '%s-%s.tgz' % (name, now.strftime(dateformat))
+    filename = '%s-%s.txz' % (name, now.strftime(dateformat))
 
     git('clone', 'https://github.com/Turistforeningen/sherpa.git')
-    tar('-czf', filename, 'sherpa')
+    tar('-cJf', filename, 'sherpa')
 
     key = boto.s3.key.Key(buck, name="%s%s" % (path, filename))
     key.set_contents_from_filename(filename)

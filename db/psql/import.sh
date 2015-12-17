@@ -8,14 +8,14 @@ s3_file=$1
 : ${s3_file:=`aws s3 ls ${s3_path} | tail -n 1 | awk ' {print $4}'`}
 
 echo "Downloading '${s3_file}' from S3..."
-aws s3 cp "${s3_path}${s3_file}" sherpa.gz
+aws s3 cp "${s3_path}${s3_file}" sherpa.xz
 AWS_STATUS=$?
 if [ $AWS_STATUS -ne 0 ]; then
   echo "AWS CLI exited with code $AWS_STATUS; aborting import..."
   exit 1
 fi
 
-gunzip -f sherpa.gz
+xz --decompress sherpa.xz
 
 $PSQL -e <<EOSQL
 DROP DATABASE IF EXISTS sherpa;
