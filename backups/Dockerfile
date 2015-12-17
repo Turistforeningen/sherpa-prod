@@ -19,7 +19,7 @@ COPY requirements.txt /backups/
 RUN pip install -r /backups/requirements.txt
 COPY backups.py /backups/
 RUN chmod +x /backups/backups.py
-COPY private-data/* /backups/
+COPY secrets/settings.py /backups/
 
 # Install the crontab
 COPY crontab /backups/
