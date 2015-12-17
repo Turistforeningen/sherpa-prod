@@ -156,6 +156,11 @@ docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${PORT}
 if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
   echo "Stopping old Sherpa containers..."
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
+
+  read -p "Remove old containers and associatied volumes, disabling easy rollback?[y/N] " yn
+  case $yn in
+    [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} rm -v;;
+  esac
 fi
 
 # Build successful; commit and push the new deployment
