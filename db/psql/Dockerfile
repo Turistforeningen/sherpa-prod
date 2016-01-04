@@ -2,7 +2,9 @@ FROM turistforeningen/sherpa-postgres:latest
 
 # Install AWS cli
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python-pip \
+  && apt-get install -y --no-install-recommends \
+    xz-utils \
+    python-pip \
   && pip install -U awscli
 
 # Copy import db script
