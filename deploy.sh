@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMPOSE_FILE=sherpa/sherpa/docker-compose-prod.yml
+COMPOSE_FILE=sherpa/sherpa/production.yml
 
 DEPLOYMENT_METHOD=$1
 SHERPA_COMMIT=$2
