@@ -78,7 +78,7 @@ fi
 # Build
 echo "Building Sherpa containers..."
 docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} pull
-docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build
+docker-compose -f ${COMPOSE_FILE} -p ${NEW_SHA} build --pull
 
 # Hard deployments: remove the current backend before migrating
 if [[ -n ${OLD_SHA} && "$DEPLOYMENT_METHOD" = "hard" ]]; then
