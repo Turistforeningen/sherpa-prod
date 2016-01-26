@@ -28,6 +28,13 @@ if [[ ! "${DOCKER_MACHINE_VERSION}" =~ ^docker-machine\ version\ 0.5. ]]; then
   exit 1
 fi
 
+eval "$(docker-machine env ${LETSENCRYPT_MACHINE})"
+ACTIVE_MACHINE=`docker-machine active`
+if [ "${ACTIVE_MACHINE}" != "${LETSENCRYPT_MACHINE}" ]; then
+  echo "Please add ${LETSENCRYPT_MACHINE} to your Docker machines."
+  exit 1
+fi
+
 if [ ! -e $CERTS_DIR ]; then
   echo "Certificate directory ${CERTS_DIR} does not exist."
   exit 1
@@ -46,7 +53,6 @@ case $yn in
 esac
 
 echo "Requesting certificate with ${LETSENCRYPT_MACHINE}, please wait..."
-eval "$(docker-machine env ${LETSENCRYPT_MACHINE})"
 docker run \
   -it \
   --rm \
