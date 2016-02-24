@@ -1,4 +1,6 @@
 #!/bin/bash
+source raven-bash
+
 echo -e "\n$(date): pulling sherpa-prod..." >> /cron/logfile 2>&1
 /cron/pull.sh >> /cron/logfile 2>&1
 

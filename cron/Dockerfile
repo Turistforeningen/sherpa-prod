@@ -1,15 +1,15 @@
-FROM ubuntu:14.04
+FROM python:3.5
 
 # Set the correct timezone so that cronjobs run when expected
 RUN ln -sf /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 
-# Install docker and docker-compose
+# Requirements:
+# - git: To pull down sherpa-prod and sherpa
+# - docker-compose: To run commands in the deployed sherpa containers
+# - raven-bash: To notify of errors in cronjobs
 RUN apt-get -y update
 RUN apt-get -y --no-install-recommends install cron wget git
-RUN wget --no-check-certificate -qO- https://get.docker.com/ | sh
-RUN wget -qO- https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose
-RUN ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+RUN pip install docker-compose==1.6.2 raven-bash==0.1.1
 
 # Work in the /cron directory
 RUN mkdir /cron
