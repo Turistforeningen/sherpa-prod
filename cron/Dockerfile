@@ -7,7 +7,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 RUN apt-get -y update
 RUN apt-get -y --no-install-recommends install cron wget git
 RUN wget --no-check-certificate -qO- https://get.docker.com/ | sh
-RUN wget -qO- https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN wget -qO- https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 RUN ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
