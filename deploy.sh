@@ -11,6 +11,9 @@ DOCKER_COMPOSE_VERSION=`docker-compose --version`
 SHERPA_MACHINE_NAME="app1.hw.dnt.no"
 HAPROXY_CONTAINER=`pushd haproxy > /dev/null; docker-compose ps -q; popd > /dev/null`
 
+# Needed because creating the builder container takes a while
+COMPOSE_HTTP_TIMEOUT=120
+
 if [[ "${DEPLOYMENT_METHOD}" != "soft" && "${DEPLOYMENT_METHOD}" != "hard" ]]; then
   echo "Usage: $0 soft|hard [commit[ branch]]"
   exit 1
