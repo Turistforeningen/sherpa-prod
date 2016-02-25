@@ -1,6 +1,0 @@
-cron:
-  build: .
-  command: cron -f
-  volumes:
-  - /var/run/docker.sock:/var/run/docker.sock:ro
-  env_file: secrets/cron.env

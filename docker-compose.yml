@@ -1,0 +1,28 @@
+haproxy:
+  build: haproxy/
+  privileged: true
+  extra_hosts:
+  - docker0:172.17.0.1
+  ports:
+  - "0.0.0.0:80:80"
+  - "0.0.0.0:443:443"
+  restart: always
+
+backups:
+  build: backups/
+  command: cron -f
+  volumes:
+  - /var/run/docker.sock:/var/run/docker.sock:ro
+
+cron:
+  build: cron/
+  command: cron -f
+  volumes:
+  - /var/run/docker.sock:/var/run/docker.sock:ro
+  env_file: cron/secrets/cron.env
+
+statsd:
+  image: jcoene/statsd-librato
+  env_file: statsd-librato/secrets/librato.env
+  ports:
+    - "8125:8125/udp"
