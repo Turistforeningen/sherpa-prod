@@ -6,6 +6,7 @@ haproxy:
   ports:
   - "0.0.0.0:80:80"
   - "0.0.0.0:443:443"
+  - "0.0.0.0:9000:9000"
   restart: always
 
 backups:
