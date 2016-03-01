@@ -157,7 +157,8 @@ docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${PORT}
 
 # Stop old
 if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
-  echo "Stopping old Sherpa containers..."
+  echo "Stopping old Sherpa containers in 3 seconds..."
+  sleep 3
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
 
   # Note that we're relying on docker-compose's `rm` command to ask the user to confirm removal
