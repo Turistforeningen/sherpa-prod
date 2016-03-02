@@ -1,5 +1,8 @@
 # Note that the environment variable can't be exported from docker-compose settings as it's not inherited by cron.
 
+# ensure PATH includes /usr/local/bin since cron's profile doesn't by default
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
  30  3  *   *   *  export PYTHONUNBUFFERED=0; /backups/backups.py >> /backups/backups.log 2>&1
 
 # ┬  ┬  ┬   ┬   ┬

@@ -5,7 +5,6 @@ RUN apt-get -y update
 RUN apt-get -y --no-install-recommends install cron wget git
 RUN wget -qO- https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.9.1 > /usr/local/bin/docker
 RUN chmod +x /usr/local/bin/docker
-RUN ln -s /usr/local/bin/python /usr/bin/python
 
 # Work in the /backups directory
 RUN mkdir /backups
