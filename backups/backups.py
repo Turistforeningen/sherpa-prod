@@ -5,7 +5,6 @@ import time
 
 from sh import git, tar, rm
 import boto
-# import ftputil
 from raven import Client
 
 import settings
@@ -68,98 +67,6 @@ try:
     rm('-r', 'sherpa/')
     rm(filename)
     clean_old_backups(buck, path, True, name)
-
-    #
-    # Now backup the ENTIRE S3 (including backup folder) to our local on-site FTP server
-    #
-
-    # FTP backup is currently not working and therefore deactivated, but the code is left commented in case we might
-    # want to reenable the on-site backup.
-
-    # def iterate_dir(host, dir):
-    #     names = []
-    #     for name in host.listdir(dir):
-    #         if(host.path.isdir('%s/%s' % (dir, name))):
-    #             names.extend(iterate_dir(host, '%s/%s' % (dir, name)))
-    #         else:
-    #             names.append(('%s/%s' % (dir, name)))
-    #     return names
-
-    # # Our Windows-based FTP server has case-insensitive file- and dirnames, so we'll
-    # # get some collisions. Minimize the risk for that by including the entire S3 path
-    # # in the filename - dirs sparated by '.', filename separated by '--'.
-    # # Note that if a dir in the path includes '--' in its name, which is unlikely but
-    # # possible, it might not be obvious which part is a dir and which is a filename.
-    # def flat_name(name):
-    #     dirs = name.split('/')
-    #     return '%s--%s' % ('.'.join(dirs[:-1]), dirs[-1])
-
-    # print("Cloning S3 (without versioning) to local FTP server...")
-    # FTP_PREFIX = '/backups/s3'
-
-    # for bucket in settings.buckets:
-    #     print("  Bucket: %s" % bucket['name'])
-
-    #     # Define the logic in a function to be able to retry on failure
-    #     def attempt_ftp_clone():
-    #         # First save a list of existing file versions on the FTP-server.
-    #         with ftputil.FTPHost(*settings.ftp_args) as host:
-    #             existing_names = iterate_dir(host, "%s/%s" % (FTP_PREFIX, bucket['name']))
-
-    #         # Initiate the S3-connection
-    #         conn = boto.connect_s3(bucket['creds']['access_key'], bucket['creds']['secret_key'])
-    #         buck = conn.get_bucket(bucket['name'])
-
-    #         """
-    #         For now, save all normal keys, ignoring versioning. When IT gives us a larger disk,
-    #         consider storing all versions as well (see vcs history for previous code).
-    #         """
-    #         for v in buck.list():
-    #             # Skip folders
-    #             if v.name.endswith('/'):
-    #                 continue
-
-    #             # Skip explicitly excluded paths
-    #             exclude_match = False
-    #             for exclude in bucket['excludes']:
-    #                 if v.name.startswith(exclude):
-    #                     print("  %s skipped (matches excluded path: %s)" % (v.name, exclude))
-    #                     exclude_match = True
-    #             if exclude_match:
-    #                 continue
-
-    #             ftp_path = '%s/%s/%s' % (FTP_PREFIX, bucket['name'], flat_name(v.name))
-
-    #             if ftp_path in existing_names:
-    #                 # Note that this will ignore newer replaced files with the same name!
-    #                 continue
-
-    #             print("  %s -> %s" % (v.name, ftp_path))
-    #             with ftputil.FTPHost(*settings.ftp_args) as host:
-    #                 with host.open(ftp_path, 'wb') as target:
-    #                     try:
-    #                         v.get_contents_to_file(target)
-    #                     except Exception:
-    #                         # On any failure, make sure any partly uploaded file isn't left behind
-    #                         target.delete()
-    #                         raise
-
-    #     def attempt_with_retries(i=1):
-    #         try:
-    #             attempt_ftp_clone()
-    #         except Exception:
-    #             # On any failure...
-    #             if i < 5:
-    #                 # Just retry the entire backup. If this was a timeout error, the retry will now skip files
-    #                 # successfully uploaded during the previous round and we'll hope that the remaining data is
-    #                 # can be successfully uploaded during the next attempt without a new timeout.
-    #                 attempt_with_retries(i + 1)
-    #             else:
-    #                 # Can't seem to get rid of this failure - give up backuping and let it get sent to Sentry
-    #                 raise
-
-    #     # Start it
-    #     attempt_with_retries()
 
 except Exception as e:
     print((u"Exception (sent to Sentry): %s" % e.message).encode('utf-8'))
