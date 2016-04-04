@@ -56,7 +56,7 @@ echo "Requesting certificate with ${LETSENCRYPT_MACHINE}, please wait..."
 docker run \
   -it \
   --rm \
-  -v /home/ubuntu/certs:/etc/letsencrypt/archive \
+  -v /certs:/etc/letsencrypt/archive \
   --name letsencrypt \
   -p 0.0.0.0:80:80 \
   quay.io/letsencrypt/letsencrypt \
@@ -75,9 +75,9 @@ if [ $DOCKER_RUN_STATUS -ne 0 ]; then
 fi
 
 echo "Done, moving certificate to your local machine..."
-docker-machine scp ${LETSENCRYPT_MACHINE}:~/certs/${DOMAIN}/privkey1.pem ${CERT_FILE}-key
-docker-machine scp ${LETSENCRYPT_MACHINE}:~/certs/${DOMAIN}/fullchain1.pem ${CERT_FILE}-chain
+docker-machine scp ${LETSENCRYPT_MACHINE}:/certs/${DOMAIN}/privkey1.pem ${CERT_FILE}-key
+docker-machine scp ${LETSENCRYPT_MACHINE}:/certs/${DOMAIN}/fullchain1.pem ${CERT_FILE}-chain
 cat ${CERT_FILE}-key ${CERT_FILE}-chain > ${CERT_FILE}
 rm ${CERT_FILE}-key ${CERT_FILE}-chain
-docker-machine ssh ${LETSENCRYPT_MACHINE} "sudo rm -rf ~/certs/${DOMAIN}/"
+docker-machine ssh ${LETSENCRYPT_MACHINE} "sudo rm -rf /certs/${DOMAIN}/"
 echo "Ok, your certificate is stored in: ${CERT_FILE}"
