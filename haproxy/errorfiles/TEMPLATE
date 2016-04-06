@@ -64,7 +64,8 @@ Content-Type: text/html
 <body>
 
   <h1 id="header">Turistforeningens nettsider er nede for midlertidig vedlikehold.</h1>
-  <p id="desc">Turbo er på saken. Vær tålmodig, så skal vi få sidene opp igjen så snart som mulig.</p>
+  <p id="desc">Turbo er på saken. Vær tålmodig, så skal vi få sidene opp igjen så snart som mulig.
+  I mellomtiden kan du følge med på <a href="http://status.dnt.no">status.dnt.no</a>.</p>
 
   <img alt="Turbo griller pølser" width="404" src="data:image/jpeg;base64,{{ ERROR_B64_IMAGE }}">
 
