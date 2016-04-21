@@ -8,7 +8,7 @@ SHERPA_BRANCH=$3
 
 DOCKER_MACHINE_ACTIVE=`docker-machine active`
 DOCKER_COMPOSE_VERSION=`docker-compose --version`
-SHERPA_MACHINE_NAME="app1.hw.dnt.no"
+SHERPA_MACHINE_NAME="app2.hw.dnt.no"
 HAPROXY_CONTAINER=`docker-compose ps -q haproxy`
 
 # Needed because creating the builder container takes a while
