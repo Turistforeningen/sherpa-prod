@@ -16,6 +16,7 @@ services:
     command: cron -f
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
 
   cron:
     build: cron/
@@ -23,12 +24,14 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
     env_file: cron/secrets/cron.env
+    restart: always
 
   statsd:
     image: jcoene/statsd-librato
     env_file: statsd-librato/secrets/librato.env
     ports:
       - "8125:8125/udp"
+    restart: always
 
   psql:
     build: postgres/psql/
