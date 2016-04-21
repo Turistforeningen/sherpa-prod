@@ -43,7 +43,7 @@ try:
 
     key = boto.s3.key.Key(buck, name="%s%s" % (path, filename))
     db = subprocess.check_output([
-        'docker exec db_postgres_1 /usr/bin/pg_dump -U postgres -Fc sherpa | xz --compress'
+        'docker exec sherpaprod_postgres_1 /usr/bin/pg_dump -U postgres -Fc sherpa | xz --compress'
     ], stdin=subprocess.PIPE, shell=True)
     key.set_contents_from_string(db)
 

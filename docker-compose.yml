@@ -27,3 +27,23 @@ statsd:
   env_file: statsd-librato/secrets/librato.env
   ports:
     - "8125:8125/udp"
+
+psql:
+  build: postgres/psql/
+  links:
+    - postgres
+  command: /bin/true
+  env_file: postgres/psql/secrets/s3backup.env
+
+postgres:
+  build: postgres/
+  volumes_from:
+    - data
+  command: postgres -N 300 -d 1
+  restart: always
+
+data:
+  image: busybox
+  volumes:
+    - /var/lib/postgresql/data
+  entrypoint: /bin/true
