@@ -1,49 +1,51 @@
-haproxy:
-  build: haproxy/
-  privileged: true
-  extra_hosts:
-  - docker0:172.17.0.1
-  ports:
-  - "0.0.0.0:80:80"
-  - "0.0.0.0:443:443"
-  - "0.0.0.0:9000:9000"
-  restart: always
+version: '2'
+services:
+  haproxy:
+    build: haproxy/
+    privileged: true
+    extra_hosts:
+    - docker0:172.17.0.1
+    ports:
+    - "0.0.0.0:80:80"
+    - "0.0.0.0:443:443"
+    - "0.0.0.0:9000:9000"
+    restart: always
 
-backups:
-  build: backups/
-  command: cron -f
-  volumes:
-  - /var/run/docker.sock:/var/run/docker.sock:ro
+  backups:
+    build: backups/
+    command: cron -f
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
 
-cron:
-  build: cron/
-  command: cron -f
-  volumes:
-  - /var/run/docker.sock:/var/run/docker.sock:ro
-  env_file: cron/secrets/cron.env
+  cron:
+    build: cron/
+    command: cron -f
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file: cron/secrets/cron.env
 
-statsd:
-  image: jcoene/statsd-librato
-  env_file: statsd-librato/secrets/librato.env
-  ports:
-    - "8125:8125/udp"
+  statsd:
+    image: jcoene/statsd-librato
+    env_file: statsd-librato/secrets/librato.env
+    ports:
+      - "8125:8125/udp"
 
-psql:
-  build: postgres/psql/
-  links:
-    - postgres
-  command: /bin/true
-  env_file: postgres/psql/secrets/s3backup.env
+  psql:
+    build: postgres/psql/
+    links:
+      - postgres
+    command: /bin/true
+    env_file: postgres/psql/secrets/s3backup.env
 
-postgres:
-  build: postgres/
-  volumes_from:
-    - data
-  command: postgres -N 300 -d 1
-  restart: always
+  postgres:
+    build: postgres/
+    volumes_from:
+      - data
+    command: postgres -N 300 -d 1
+    restart: always
 
-data:
-  image: busybox
-  volumes:
-    - /var/lib/postgresql/data
-  entrypoint: /bin/true
+  data:
+    image: busybox
+    volumes:
+      - /var/lib/postgresql/data
+    entrypoint: /bin/true

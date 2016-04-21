@@ -161,9 +161,10 @@ if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
   sleep 3
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
 
-  # Note that we're relying on docker-compose's `rm` command to ask the user to confirm removal
-  echo "Remove old containers and associatied volumes, disabling easy rollback?"
-  docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} rm -v
+  read -p "Remove old containers, networks and volumes, disabling easy rollback? [y/N] " yn
+  case $yn in
+    [Yy]*) docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} down -v;;
+  esac
 fi
 
 # Build successful; commit and push the new deployment
