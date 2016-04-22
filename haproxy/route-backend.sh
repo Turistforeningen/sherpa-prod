@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NEW_PORT=$1
-OLD_PORTS=`iptables -t nat -S | grep "\-A OUTPUT" | sed -r 's/^.+ --to-destination :([0-9]+)$/\1/'`
+OLD_PORTS=`iptables -t nat -S | grep "\-A OUTPUT" | grep "\-\-dport 8080" | sed -r 's/^.+ --to-destination :([0-9]+)$/\1/'`
 
 # Add new port to preroute
 if [ -n "${NEW_PORT}" ]; then
