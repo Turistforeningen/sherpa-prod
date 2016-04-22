@@ -159,6 +159,9 @@ docker exec -it ${HAPROXY_CONTAINER} ./route-backend.sh ${PORT}
 if [[ -n ${OLD_SHA} && "${OLD_SHA}" != "${NEW_SHA}" ]]; then
   echo "Stopping old Sherpa containers in 3 seconds..."
   sleep 3
+
+  # Stop the app first, then remaining services
+  docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop sherpa
   docker-compose -f ${COMPOSE_FILE} -p ${OLD_SHA} stop
 
   read -p "Remove old containers, networks and volumes, disabling easy rollback? [y/N] " yn
