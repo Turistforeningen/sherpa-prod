@@ -70,6 +70,10 @@ try:
     clean_old_backups(buck, path, True, name)
 
 except Exception as e:
-    print((u"Exception (sent to Sentry): %s" % e.message).encode('utf-8'))
+    if hasattr(e, 'message'):
+        message = e.message
+    else:
+        message = "(no message)"
+    print((u"Exception (sent to Sentry): %s" % message).encode('utf-8'))
     raven.captureException()
     time.sleep(10) # Give raven time to send the error to Sentry
