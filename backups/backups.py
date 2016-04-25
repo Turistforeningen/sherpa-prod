@@ -42,10 +42,11 @@ try:
     filename = '%s-%s.xz' % (name, now.strftime(dateformat))
 
     key = boto.s3.key.Key(buck, name="%s%s" % (path, filename))
-    db = subprocess.check_output([
-        'docker exec sherpaprod_postgres_1 /usr/bin/pg_dump -U postgres -Fc sherpa | xz --compress'
-    ], stdin=subprocess.PIPE, shell=True)
-    key.set_contents_from_string(db)
+    pgdump_process = subprocess.run([
+        'docker', 'exec', 'sherpaprod_postgres_1', '/usr/bin/pg_dump', '-U', 'postgres', '-Fc', 'sherpa'
+    ], stdout=subprocess.PIPE, check=True)
+    compress_process = subprocess.run(['xz', '--compress'], input=pgdump_process.stdout, stdout=subprocess.PIPE, check=True)
+    key.set_contents_from_string(compress_process.stdout)
 
     clean_old_backups(buck, path, False, name)
 
