@@ -35,8 +35,8 @@ services:
 
   psql:
     build: postgres/psql/
-    links:
-      - postgres
+    depends_on:
+    - postgres
     command: /bin/true
     env_file: postgres/psql/secrets/s3backup.env
 
