@@ -29,7 +29,7 @@ if [[ "${DOCKER_MACHINE_ACTIVE}" != "${SHERPA_MACHINE_NAME}" ]]; then
   esac
 fi
 
-if [[ ! "${DOCKER_COMPOSE_VERSION}" =~ ^docker-compose\ version\ 1.6. ]]; then
+if [[ ! "${DOCKER_COMPOSE_VERSION}" =~ ^docker-compose\ version\ 1.7. ]]; then
   echo "Sorry, ${DOCKER_COMPOSE_VERSION} is not supported!"
   exit 1
 fi
