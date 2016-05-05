@@ -42,7 +42,11 @@ fi
 
 if [ -e ${CERT_FILE} ]; then
   echo "Certificate ${CERT_FILE} already exists."
-  exit 1
+  read -p "Renew? [y/N] " yn
+  case $yn in
+    [Yy]*) ;;
+    *) exit 0;;
+  esac
 fi
 
 echo "Domain name args for letsencrypt: ${LETSENCRYPT_DOMAIN_ARGS}"
