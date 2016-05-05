@@ -1,4 +1,4 @@
-FROM haproxy:1.5
+FROM haproxy:1.6
 
 RUN groupadd -r haproxy && useradd -r -g haproxy haproxy
 
