@@ -23,8 +23,8 @@ else
   exit 1
 fi
 
-if [[ ! "${DOCKER_MACHINE_VERSION}" =~ ^docker-machine\ version\ 0.5. ]]; then
-  echo "Sorry, this script is compatible with docker-machine version 0.5; you're running: ${DOCKER_MACHINE_VERSION}"
+if [[ ! "${DOCKER_MACHINE_VERSION}" =~ ^docker-machine\ version\ 0.6. ]]; then
+  echo "Sorry, this script is compatible with docker-machine version 0.6; you're running: ${DOCKER_MACHINE_VERSION}"
   exit 1
 fi
 
