@@ -7,7 +7,7 @@ PORT=$1
 OLD_CONTAINER=`docker-compose ps -q haproxy`
 if [ -z ${PORT} ]; then
   echo "No port specified, looking up current port in haproxy container..."
-  PORT=`docker exec ${OLD_CONTAINER} /bin/bash -c "iptables -t nat -S | grep \"\-A OUTPUT\" | sed -r 's/^.+ --to-destination :([0-9]+)$/\1/'"`
+  PORT=`docker exec ${OLD_CONTAINER} /bin/bash -c "iptables -t nat -S | grep \"\-A OUTPUT\" | grep \"\-\-dport 8080\" | sed -r 's/^.+ --to-destination :([0-9]+)$/\1/'"`
   read -p "Rebuilding with backend route to port '${PORT}', OK? [y/N] " yn
   case $yn in
     [Yy]*)
