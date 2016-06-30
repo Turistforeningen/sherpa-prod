@@ -26,6 +26,12 @@ services:
     env_file: cron/secrets/cron.env
     restart: always
 
+  s3-sync:
+    build: s3-sync/
+    command: cron -f
+    env_file: s3-sync/secrets/aws-credentials.env
+    restart: always
+
   statsd:
     image: jcoene/statsd-librato
     env_file: statsd-librato/secrets/librato.env

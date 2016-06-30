@@ -19,3 +19,6 @@
 [submodule "postgres/psql/secrets"]
 	path = postgres/psql/secrets
 	url = git.hw.dnt.no:~/repos/sherpa-db/
+[submodule "s3-sync/secrets"]
+	path = s3-sync/secrets
+	url = git.hw.dnt.no:~/repos/s3-sync/
