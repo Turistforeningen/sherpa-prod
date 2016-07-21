@@ -12,6 +12,9 @@ RUN pip install awscli
 RUN mkdir /app
 WORKDIR /app
 
+# Copy secrets to be sourced (note that cron doesn't inherit env)
+COPY secrets/aws-credentials.env /app/
+
 # Install crontab
 COPY crontab /app/
 RUN cat /app/crontab | crontab && rm /app/crontab
