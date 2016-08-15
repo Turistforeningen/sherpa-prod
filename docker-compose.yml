@@ -19,11 +19,14 @@ services:
     restart: always
 
   cron:
-    build: cron/
-    command: cron -f
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    env_file: cron/secrets/cron.env
+    build: cron/sherpa/
+    working_dir: /sherpa/cron
+    environment:
+      DJANGO_CONFIGURATION: "prod"
+      DJANGO_SETTINGS_MODULE: "sherpa.settings"
+      PYTHONUNBUFFERED: "1"
+    env_file: cron/sherpa/secrets/settings.env
+    command: ./cron.sh
     restart: always
 
   s3-sync:
