@@ -22,7 +22,7 @@ services:
     build: cron/sherpa/
     working_dir: /sherpa/cron
     environment:
-      DJANGO_CONFIGURATION: "prod"
+      DJANGO_CONFIGURATION: "cron"
       DJANGO_SETTINGS_MODULE: "sherpa.settings"
       PYTHONUNBUFFERED: "1"
     env_file: cron/sherpa/secrets/settings.env
